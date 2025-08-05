@@ -46,8 +46,8 @@ const Home = () => {
       <CompanyTable companies={companies} loading={loading} onCreateClick={() => setModalOpen(true)} />
 
       <CompanyCreateModal
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
+        open={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
         onCreate={handleCreateCompany}
       />
     </div>

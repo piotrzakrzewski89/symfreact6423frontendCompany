@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../auth/useAuth';
 
 const NavBar = () => {
-    const { user, logout, expiresAt } = useAuth();
+    const { admin, logout, expiresAt } = useAuth();
 
     const [secondsLeft, setSecondsLeft] = useState(() => {
         if (!expiresAt) return 0;
@@ -32,9 +32,9 @@ const NavBar = () => {
     }
     return (
         <nav className='navbar navbar-expand navbar-dark bg-primary px-3'>
-            {user ? (
+            {admin ? (
                 <div className="d-flex justify-content-between w-100 align-items-center">
-                    <p className="mb-0 text-white">Panel Zarządzania Firmami - Zalogowany jako: {user.email}</p>
+                    <p className="mb-0 text-white">Panel Zarządzania Firmami - Zalogowany jako: {admin.email}</p>
                     <div>
                         <span className='badge bg-light text-primary me-3'>
                             Sesja: {formatTime(secondsLeft)}

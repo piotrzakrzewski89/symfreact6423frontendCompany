@@ -30,7 +30,7 @@ const CompanyTable = ({ onCreateClick, companies, loading }) => {
       </Typography>
 
       <Box sx={{ mb: 2 }}>
-        <Button variant="contained" color="primary" onClick={onCreateClick}>
+        <Button variant="contained" color="primary" onClick={() => setIsModalOpen(true)}>
           ➕ Utwórz nową firmę
         </Button>
       </Box>
