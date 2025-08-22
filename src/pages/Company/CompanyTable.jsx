@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { parseBackendDate } from '../utils/dateUtils';
+import { parseBackendDate } from '../../utils/dateUtils';
 import { MRT_Localization_PL } from 'material-react-table/locales/pl';
 
 const CompanyTable = ({

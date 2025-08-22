@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, ButtonGroup } from '@mui/material';
-import { useAuth } from '../auth/useAuth';
 import CompanyTable from './CompanyTable';
 import CompanyModal from './CompanyModal';
 import {
@@ -11,11 +10,9 @@ import {
   deleteCompany,
   toggleCompanyActive,
   reviewCompany,
-} from '../api/company';
+} from '../../api/company';
 
 const CompanyPage = () => {
-  const { admin } = useAuth();
-
   const [activeCompanies, setActiveCompanies] = useState([]);
   const [deletedCompanies, setDeletedCompanies] = useState([]);
   const [loadingActive, setLoadingActive] = useState(false);
@@ -108,9 +105,6 @@ const CompanyPage = () => {
 
   return (
     <Box sx={{ p: 5, textAlign: 'center' }}>
-      <p>Witaj <strong>{admin?.email}</strong></p>
-      <p>Twoje role: {admin?.roles?.join(', ')}</p>
-
       <Box sx={{ mb: 2, display: 'flex', justifyContent: 'center' }}>
         <ButtonGroup variant="contained">
           <Button onClick={() => setView('active')} color={view === 'active' ? 'primary' : 'inherit'}>

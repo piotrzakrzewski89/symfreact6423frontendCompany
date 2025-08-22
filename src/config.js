@@ -1,1 +1,2 @@
-const API_URL = import.meta.env.VITE_API_URL;
+export const API_COMPANY_URL = import.meta.env.VITE_API_COMPANY_URL;
+export const API_USER_URL = import.meta.env.VITE_API_USER_URL;
