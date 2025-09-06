@@ -4,21 +4,16 @@ import React, { createContext, useEffect, useState } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [admin, setadmin] = useState(() => {
+    const [admin, setAdmin] = useState(() => {
         const stored = localStorage.getItem('admin');
         return stored ? JSON.parse(stored) : null;
     });
 
-    const [expiresAt, setExpiresAt] = useState(() => {
-        const stored = localStorage.getItem('expiresAt');
-        return stored ? parseInt(stored, 10) : null;
-    });
-
     useEffect(() => {
-        if (!expiresAt) return;
+        if (!admin?.expiresAt) return;
 
         const now = Date.now();
-        const remaining = expiresAt - now;
+        const remaining = admin.expiresAt - now;
 
         if (remaining <= 0) {
             logout();
@@ -27,25 +22,31 @@ export const AuthProvider = ({ children }) => {
 
         const timer = setTimeout(logout, remaining);
         return () => clearTimeout(timer);
-    }, [expiresAt]);
+    }, [admin]);
 
     const login = (adminData) => {
         const expiry = Date.now() + 30 * 60 * 1000; // 30 min
-        setadmin(adminData);
-        setExpiresAt(expiry);
-        localStorage.setItem('admin', JSON.stringify(adminData));
-        localStorage.setItem('expiresAt', expiry.toString());
+        const updatedAdmin = { ...adminData, expiresAt: expiry };
+        setAdmin(updatedAdmin);
+        localStorage.setItem('admin', JSON.stringify(updatedAdmin));
     };
 
     const logout = () => {
-        setadmin(null);
-        setExpiresAt(null);
+        setAdmin(null);
         localStorage.removeItem('admin');
-        localStorage.removeItem('expiresAt');
+    };
+
+    // reset expiry przy każdym request
+    const refreshExpiry = () => {
+        if (!admin) return;
+        const expiry = Date.now() + 30 * 60 * 1000;
+        const updatedAdmin = { ...admin, expiresAt: expiry };
+        setAdmin(updatedAdmin);
+        localStorage.setItem('admin', JSON.stringify(updatedAdmin));
     };
 
     return (
-        <AuthContext.Provider value={{ admin, login, logout, expiresAt }}>
+        <AuthContext.Provider value={{ admin, login, logout, refreshExpiry }}>
             {children}
         </AuthContext.Provider>
     );

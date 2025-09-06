@@ -1,32 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
-
-const API_URL = import.meta.env.VITE_API_COMPANY_URL;
+import { loginApi } from '../api/auth';
 
 const LoginForm = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [companyShortName, setCompanyShortName] = useState('');
     const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+
         try {
-            const res = await fetch(`${API_URL}/login`, {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-            if (!res.ok) throw new Error('Błąd logowania');
-
-            const data = await res.json();
-
-            login({ email: data.email, roles: data.roles });
+            const data = await loginApi({ email, password, companyShortName });
+            console.log(data);
+            login({ email: data.user_email, company: data.company_uuid, token: data.token });
             navigate('/');
-
         } catch (err) {
             setError('Nieprawidłowe dane logowania');
         }
@@ -37,6 +30,18 @@ const LoginForm = () => {
             <h2 className="mb-4">Logowanie</h2>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
+
+                    <label htmlFor="company" className="form-label">Skrócona nazwa firmy</label>
+                    <input
+                        id="company"
+                        type="text"
+                        className="form-control"
+                        placeholder=""
+                        value={companyShortName}
+                        onChange={(e) => setCompanyShortName(e.target.value)}
+                        required
+                    />
+
                     <label htmlFor="email" className="form-label">Adres e-mail</label>
                     <input
                         id="email"

@@ -1,6 +1,6 @@
 // axiosCompany.js
 import axios from 'axios';
-import { API_COMPANY_URL, API_USER_URL } from '../config';
+import { API_AUTH_URL, API_COMPANY_URL, API_USER_URL } from '../config';
 
 export const axiosCompany = axios.create({
   baseURL: API_COMPANY_URL,
@@ -9,6 +9,11 @@ export const axiosCompany = axios.create({
 
 export const axiosUser = axios.create({
   baseURL: API_USER_URL,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+export const axiosAuth = axios.create({
+  baseURL: API_AUTH_URL,
   headers: { 'Content-Type': 'application/json' },
 });
 

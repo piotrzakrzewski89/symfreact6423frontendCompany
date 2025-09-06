@@ -3,18 +3,18 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../auth/useAuth';
 
 const NavBar = () => {
-    const { admin, logout, expiresAt } = useAuth();
+    const { admin, logout } = useAuth();
 
     const [secondsLeft, setSecondsLeft] = useState(() => {
-        if (!expiresAt) return 0;
-        return Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
+        if (!admin.expiresAt) return 0;
+        return Math.max(0, Math.floor((admin.expiresAt - Date.now()) / 1000));
     });
 
     useEffect(() => {
-        if (!expiresAt) return;
+        if (!admin.expiresAt) return;
 
         const interval = setInterval(() => {
-            const remaining = Math.max(0, Math.floor((expiresAt - Date.now()) / 1000));
+            const remaining = Math.max(0, Math.floor((admin.expiresAt - Date.now()) / 1000));
             setSecondsLeft(remaining);
 
             if (remaining < 0) {
@@ -23,7 +23,7 @@ const NavBar = () => {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [expiresAt, logout]);
+    }, [admin.expiresAt, logout]);
 
     const formatTime = (sec) => {
         const m = Math.floor(sec / 60).toString().padStart(2, '0');
